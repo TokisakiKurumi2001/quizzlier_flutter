@@ -2,7 +2,8 @@ class Question {
   String questionText;
   bool questionAnswer;
 
-  Question({String q, bool a}) {
+  // format according to README.md
+  Question(String q, bool a) {
     questionText = q;
     questionAnswer = a;
   }
