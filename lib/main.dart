@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
 
 // we can make object like this, outside main function and still got it run
@@ -31,10 +32,32 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  _alertEndOfQuiz(context) {
+    Alert(
+        context: context,
+        type: AlertType.success,
+        title: "Congratulations!",
+        desc: "You have answered all the questions!",
+        buttons: <DialogButton>[
+          DialogButton(
+            child: Text("Restart"),
+            onPressed: () {
+              setState(() {
+                quizBrain.resetQuestion();
+                scoreKeeper.clear();
+              });
+              Navigator.pop(context);
+            },
+            width: 120,
+          ),
+        ]).show();
+  }
+
   void checkUserAnswer({bool userPickedAnswer}) {
     bool correctAnswer = quizBrain.getQuestionAnswer();
 
     setState(() {
+      //quizBrain.isFinished();
       if (userPickedAnswer == correctAnswer) {
         scoreKeeper.add(
           Icon(
@@ -51,7 +74,12 @@ class _QuizPageState extends State<QuizPage> {
         );
       }
 
-      quizBrain.nextQuestion();
+      if (quizBrain.isFinished()) {
+        _alertEndOfQuiz(context);
+      } else {
+        quizBrain.nextQuestion();
+      }
+      //}
     });
   }
 

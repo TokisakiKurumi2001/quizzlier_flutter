@@ -47,4 +47,13 @@ class QuizBrain {
       _questionNumber++;
     }
   }
+
+  // return true if user answer the last question
+  bool isFinished() {
+    return _questionNumber == _questionBank.length - 1;
+  }
+
+  void resetQuestion() {
+    _questionNumber = 0;
+  }
 }
