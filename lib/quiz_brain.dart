@@ -3,6 +3,21 @@ import 'question.dart';
 class QuizBrain {
   int _questionNumber = 0;
 
+  // when users have answered all the question, they have 2 choices:
+  // 1. Restart
+  // 2. Close the alert and watch their points
+  //
+  // For the second scenario, user may click the True/False button
+  // again, then, new check/close icon will be added to the scoreKeeper
+  // Therefore, to prevent such thing from happening, we will turn
+  // the below flag to `true` when user have reached the last question.
+  // If the flag is `true`, scoreKeeper won't add new icon
+  // If user hit `restart`, this flag will be set back to `false`.
+  bool _haveAnswerAll = false;
+
+  // increase only when user get the correct answer.
+  int points = 0;
+
   // add the underscore before properties to make it private
   List<Question> _questionBank = [
     Question('Some cats are actually allergic to humans', true),
@@ -55,5 +70,15 @@ class QuizBrain {
 
   void resetQuestion() {
     _questionNumber = 0;
+    setHaveAnswerAll(false);
+    points = 0;
+  }
+
+  void setHaveAnswerAll(bool state) {
+    _haveAnswerAll = state;
+  }
+
+  bool getHaveAnswerAll() {
+    return _haveAnswerAll;
   }
 }

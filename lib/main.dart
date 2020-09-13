@@ -37,7 +37,8 @@ class _QuizPageState extends State<QuizPage> {
         context: context,
         type: AlertType.success,
         title: "Congratulations!",
-        desc: "You have answered all the questions!",
+        desc:
+            "You have answered all the questions! Your score is: ${quizBrain.points}",
         buttons: <DialogButton>[
           DialogButton(
             child: Text("Restart"),
@@ -57,29 +58,31 @@ class _QuizPageState extends State<QuizPage> {
     bool correctAnswer = quizBrain.getQuestionAnswer();
 
     setState(() {
-      //quizBrain.isFinished();
-      if (userPickedAnswer == correctAnswer) {
-        scoreKeeper.add(
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-        );
-      } else {
-        scoreKeeper.add(
-          Icon(
-            Icons.clear,
-            color: Colors.red,
-          ),
-        );
+      if (!quizBrain.getHaveAnswerAll()) {
+        if (userPickedAnswer == correctAnswer) {
+          scoreKeeper.add(
+            Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+          );
+          quizBrain.points += 1;
+        } else {
+          scoreKeeper.add(
+            Icon(
+              Icons.clear,
+              color: Colors.red,
+            ),
+          );
+        }
       }
 
       if (quizBrain.isFinished()) {
         _alertEndOfQuiz(context);
+        quizBrain.setHaveAnswerAll(true);
       } else {
         quizBrain.nextQuestion();
       }
-      //}
     });
   }
 
